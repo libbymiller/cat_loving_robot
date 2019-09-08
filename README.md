@@ -4,8 +4,6 @@ A robot for danbri, using Raspberry Pi, arduino and continuous rotation servos. 
 
 Details: https://planb.nicecupoftea.org/2018/12/01/cat-detector-with-tensorflow-on-a-raspberry-pi-3b/
 
-Note: the server requires python2 and the tensorflow part python3!
-
 The arduino part is for a couple of continuous rotation servos. I assume the serial is connected via the GPIO:
 
 5v on Pi to 5v on the arduino (e.g. GPIO physical numbering 2 or 4)
