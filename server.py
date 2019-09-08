@@ -32,7 +32,7 @@ def index():
       if(command):
 
         print(command+"\n")
-        ser.write(command+"\n")
+        ser.write(command.encode()+"\n")
 
 
     response.set_header('Access-Control-Allow-Origin', '*')
