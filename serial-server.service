@@ -1,0 +1,15 @@
+[Unit]
+Description=Server connection to serial0
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/models/tutorials/image/imagenet
+ExecStart=/usr/bin/python server.py
+Restart=on-failure
+StandardOutput=syslog
+SyslogIdentifier=serial-server
+Type=idle
+User=pi
+
+[Install]
+WantedBy=multi-user.target

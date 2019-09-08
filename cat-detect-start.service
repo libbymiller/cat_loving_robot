@@ -1,0 +1,17 @@
+[Unit]
+Description=Cat detector tensorflow thingy
+Wants=serial-server.service
+After=serial-server.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/models/tutorials/image/imagenet
+ExecStart=/usr/bin/python3 classify_image_cat.py
+Restart=on-failure
+StandardOutput=syslog
+SyslogIdentifier=cat-detctor
+Type=idle
+User=pi
+
+[Install]
+WantedBy=multi-user.target
