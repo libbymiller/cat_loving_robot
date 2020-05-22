@@ -35,9 +35,6 @@ to use this script to perform image recognition.
 
 https://tensorflow.org/tutorials/image_recognition/
 
-This is an edited version that is obsessed with cats - if it sees one, it sends a 
-message to the server.
-
 """
 
 from __future__ import absolute_import
@@ -58,7 +55,6 @@ import random
 
 import os
 import os.path
-import re
 import sys
 import tarfile
 
@@ -104,42 +100,6 @@ print("[INFO] cam sampling THREADED frames from `picamera` module...")
 vs = PiVideoStream().start()
 time.sleep(2.0)
 fps = FPS().start()
-
-
-
-
-### more
-def run_image(sess, img_id, img_url, node_lookup):
-  from six.moves import urllib
-  from urllib2 import HTTPError
-  try:
-    image_data = urllib.request.urlopen(img_url, timeout=1.0).read()
-  except HTTPError:
-    return (img_id, img_url, None)
-  except:
-    return (img_id, img_url, None)
-  scores = []
-  softmax_tensor = sess.graph.get_tensor_by_name('softmax:0')
-  predictions = sess.run(softmax_tensor,
-                         {'DecodeJpeg/contents:0': image_data})
-  predictions = np.squeeze(predictions)
-  top_k = predictions.argsort()[-num_top_predictions:][::-1]
-  scores = []
-  for node_id in top_k:
-    if node_id not in node_lookup:
-      human_string = ''
-    else:
-      human_string = node_lookup[node_id]
-    score = predictions[node_id]
-    scores.append((human_string, score))
-  return (img_id, img_url, scores)
-
-
-### end more
-
-
-
-
 
 
 
@@ -217,7 +177,7 @@ def create_graph():
     graph_def.ParseFromString(f.read())
     _ = tf.import_graph_def(graph_def, name='')
 
-#def run_inference_on_image(fn='/home/pi/Desktop/camlive.jpg'):
+
 def run_inference_on_image(fn='/home/pi/camlive.jpg'):
   """Runs inference on an image.
 
@@ -270,32 +230,21 @@ def run_inference_on_image(fn='/home/pi/camlive.jpg'):
         human_string = None
         human_string = node_lookup.id_to_string(node_id)
         arr = human_string.split(",")
-        # match the word cat
-        print(arr)
-        for item in arr:
-          matchObj = re.match( r'.*cat.*', item)
-          print(matchObj)
-          if(matchObj):
-             print(score)
-             print("cat!")
+        if(arr[0]):
+          print('%s (score = %.5f)' % (arr[0], score))
+          os.system("espeak-ng -w test.wav '"+arr[0]+"' && aplay test.wav")
+        else:
+          os.system("espeak-ng -w test.wav 'nothing' && aplay test.wav")
 
-             int_score = int(score * 100)
-             print(int_score)
-             servo_value = 90 - int_score
-             if(last_serial != servo_value):
-               print("sending payload")
-               print(str(servo_value))
-               payload = {'command': str(servo_value)}
-               # talk to the servo
-               r = requests.post('http://localhost:8080/', payload)
-               last_serial = servo_value
-             time.sleep(0.1)
-          else:
-             servo_value = 90
-             if(last_serial != servo_value):
-               payload = {'command': "90"}
-               last_serial = 90
-               r = requests.post('http://localhost:8080/', payload)
+        # save results
+        #dt = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
+        #os.system("cp "+fn+" results/"+dt+".jpg")
+        #f1=open("results/"+dt+".txt", 'w+')
+        #f1.write(str(human_string))
+        #f1.write(str(score))
+        #f1.write(str(top_k))
+        #f1.close()
+
 
 def maybe_download_and_extract():
   """Download and extract model tar file."""
