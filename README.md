@@ -1,8 +1,16 @@
-# cat_loving_robot
+# classify_image.py
+
+A tensorflow imagenet model hooked up to a Raspberry Pi camera. 
+
+See https://planb.nicecupoftea.org/2020/05/22/pi-opencv-tensorflow-again/ for details on how to use it.
+
+# classify_image_cat.py
 
 A robot for danbri, using Raspberry Pi, arduino and continuous rotation servos. It races towards cats when it sees them.
 
 Details: https://planb.nicecupoftea.org/2018/12/01/cat-detector-with-tensorflow-on-a-raspberry-pi-3b/
+
+- but use https://planb.nicecupoftea.org/2020/05/22/pi-opencv-tensorflow-again/ for updated instructions for tf and opencv for Buster.
 
 The arduino part is for a couple of continuous rotation servos. I assume the serial is connected via the GPIO:
 
@@ -15,11 +23,9 @@ the Arduino - we get away with it.
 
 # install
 
-More details for the Pi here: https://planb.nicecupoftea.org/2018/12/01/cat-detector-with-tensorflow-on-a-raspberry-pi-3b/
+More details for the Pi here: https://planb.nicecupoftea.org/2020/05/22/pi-opencv-tensorflow-again/
 
-    sudo apt install python3-dev python3-pip
-    sudo apt install libatlas-base-dev
-    pip3 install --user --upgrade tensorflow
+For the cat-robot part, you also need: 
 
-    pip3 install pyserial
-    pip3 install bottle
+    pip install pyserial
+    pip install bottle
