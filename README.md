@@ -29,3 +29,16 @@ For the cat-robot part, you also need:
 
     pip install pyserial
     pip install bottle
+
+# deploy
+
+For autostart on boot you need to do this sort of thing:
+
+    sudo cp image-detect-start.service /etc/systemd/system/
+    sudo systemctl enable image-detect-start
+    sudo systemctl start image-detect-start
+
+Those `.service` systemd files assume you are using the python in /home/pi/env.
+
+Look for logs / fails in `sudo tail -f /var/log/syslog`
+

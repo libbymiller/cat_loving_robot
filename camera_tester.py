@@ -17,6 +17,10 @@ import time
 import datetime
 
 
+dir = "results"
+if not os.path.exists(dir):
+    os.makedirs(dir)
+
 # cam
 print("[INFO] cam sampling THREADED frames from `picamera` module...")
 vs = PiVideoStream().start()

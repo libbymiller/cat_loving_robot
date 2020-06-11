@@ -6,10 +6,10 @@ After=serial-server.service
 [Service]
 Type=simple
 WorkingDirectory=/home/pi/cat_loving_robot
-ExecStart=/home/pi/env/bin/python classify_image_cat.py
+ExecStart=/home/pi/env/bin/python classify_image.py
 Restart=on-failure
 StandardOutput=syslog
-SyslogIdentifier=cat-detector
+SyslogIdentifier=classify_image
 Type=idle
 User=pi
 
